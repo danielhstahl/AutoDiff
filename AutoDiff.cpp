@@ -55,7 +55,7 @@ AutoDiff log(const AutoDiff &val){
     return AutoDiff(log(val.getStandard()), val.getDual()/val.getStandard());
 }
 AutoDiff sqrt(const AutoDiff &val){
-    double getsqrt=val.getStandard();
+    double getsqrt=sqrt(val.getStandard());
     return AutoDiff(getsqrt, val.getDual()/(2*getsqrt));
 }
 AutoDiff operator+(const AutoDiff &left, const AutoDiff &right){
