@@ -24,6 +24,13 @@ class AutoDiff {
         friend bool operator==(const AutoDiff&, const AutoDiff&);
         friend bool operator==(double, const AutoDiff&);
         friend bool operator==(const AutoDiff&, double);
+        friend bool operator>(const AutoDiff&, const AutoDiff&); //compares "standard" only!
+        friend bool operator>(const AutoDiff&, double);
+        friend bool operator>(double, const AutoDiff&);
+        friend bool operator<(const AutoDiff&, const AutoDiff&);//compares "standard" only!
+        friend bool operator<(const AutoDiff&, double);
+        friend bool operator<(double, const AutoDiff&);
+
         AutoDiff operator=(const AutoDiff &right){
             return right;
         }

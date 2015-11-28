@@ -59,7 +59,7 @@ AutoDiff sqrt(const AutoDiff &val){
     return AutoDiff(getsqrt, val.getDual()/(2*getsqrt));
 }
 AutoDiff erf(const AutoDiff &val){
-    return AutoDiff(erf(val.getStandard()), (2.0/sqrt(M_PI))*exp(val.getStandard())*val.getDual());
+    return AutoDiff(erf(val.getStandard()), (2.0/sqrt(M_PI))*exp(-val.getStandard()*val.getStandard())*val.getDual());
 }
 AutoDiff operator+(const AutoDiff &left, const AutoDiff &right){
     return left.add(right);
@@ -105,4 +105,22 @@ bool operator==(double left, const AutoDiff &right){
 }
 bool operator==(const AutoDiff &left, double right){
     return left.getStandard()==right;
+}
+bool operator>(const AutoDiff &left, const AutoDiff &right){
+    return left.getStandard()>right.getStandard();
+}
+bool operator>(double left, const AutoDiff &right){
+    return left>right.getStandard();
+}
+bool operator>(const AutoDiff &left, double right){
+    return left.getStandard()>right;
+}
+bool operator<(const AutoDiff &left, const AutoDiff &right){
+    return left.getStandard()<right.getStandard();
+}
+bool operator<(double left, const AutoDiff &right){
+    return left<right.getStandard();
+}
+bool operator<(const AutoDiff &left, double right){
+    return left.getStandard()<right;
 }
