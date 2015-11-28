@@ -13,6 +13,7 @@ class AutoDiff {
         friend AutoDiff operator+(const AutoDiff&, double);
         friend AutoDiff operator+(double, const AutoDiff&);
         friend AutoDiff operator-(const AutoDiff&, const AutoDiff&);
+        friend AutoDiff operator-(const AutoDiff&);
         friend AutoDiff operator-(const AutoDiff&, double);
         friend AutoDiff operator-(double, const AutoDiff&);
         friend AutoDiff operator*(const AutoDiff&, const AutoDiff&);

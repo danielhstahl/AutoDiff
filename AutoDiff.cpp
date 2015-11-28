@@ -73,6 +73,9 @@ AutoDiff operator+(double left, const AutoDiff &right){
 AutoDiff operator-(const AutoDiff &left, const AutoDiff &right){
     return left.subtract(right);
 }
+AutoDiff operator-(const AutoDiff &right){
+    return AutoDiff(-right.getStandard(), -right.getDual());
+}
 AutoDiff operator-(const AutoDiff &left, double right){
     return left.subtract(right);
 }
