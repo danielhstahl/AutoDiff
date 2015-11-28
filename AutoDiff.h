@@ -7,7 +7,7 @@ class AutoDiff {
     private:
         double standard;
         double dual;
-        
+
     public:
         friend AutoDiff operator+(const AutoDiff&, const AutoDiff&);
         friend AutoDiff operator+(const AutoDiff&, double);
@@ -21,6 +21,16 @@ class AutoDiff {
         friend AutoDiff operator/(const AutoDiff&, const AutoDiff&);
         friend AutoDiff operator/(const AutoDiff&, double);
         friend AutoDiff operator/(double, const AutoDiff&);
+        friend bool operator==(const AutoDiff&, const AutoDiff&);
+        friend bool operator==(double, const AutoDiff&);
+        friend bool operator==(const AutoDiff&, double);
+        AutoDiff operator=(const AutoDiff &right){
+            return right;
+        }
+        AutoDiff operator+=(const AutoDiff &right){
+            standard+=right.getStandard();
+            dual+=right.getDual();
+        }
         AutoDiff(double, double);
         AutoDiff();
         AutoDiff add(const AutoDiff&) const;
@@ -42,4 +52,5 @@ AutoDiff cos(const AutoDiff&);
 AutoDiff exp(const AutoDiff&);
 AutoDiff log(const AutoDiff&);
 AutoDiff sqrt(const AutoDiff&);
+AutoDiff erf(const AutoDiff&);
 #endif

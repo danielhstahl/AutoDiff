@@ -58,6 +58,9 @@ AutoDiff sqrt(const AutoDiff &val){
     double getsqrt=sqrt(val.getStandard());
     return AutoDiff(getsqrt, val.getDual()/(2*getsqrt));
 }
+AutoDiff erf(const AutoDiff &val){
+    return AutoDiff(erf(val.getStandard()), (2.0/sqrt(M_PI))*exp(val.getStandard())*val.getDual());
+}
 AutoDiff operator+(const AutoDiff &left, const AutoDiff &right){
     return left.add(right);
 }
@@ -93,4 +96,13 @@ AutoDiff operator/(const AutoDiff &left, double right){
 }
 AutoDiff operator/(double left, const AutoDiff &right){
     return right.recipricol().multiply(left);
+}
+bool operator==(const AutoDiff &left, const AutoDiff &right){
+    return left.getStandard()==right.getStandard() && left.getDual()==right.getDual();
+}
+bool operator==(double left, const AutoDiff &right){
+    return left==right.getStandard();
+}
+bool operator==(const AutoDiff &left, double right){
+    return left.getStandard()==right;
 }
