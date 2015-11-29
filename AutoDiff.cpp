@@ -109,6 +109,15 @@ bool operator==(double left, const AutoDiff &right){
 bool operator==(const AutoDiff &left, double right){
     return left.getStandard()==right;
 }
+bool operator!=(const AutoDiff &left, const AutoDiff &right){
+    return left.getStandard()!=right.getStandard() && left.getDual()!=right.getDual();
+}
+bool operator!=(double left, const AutoDiff &right){
+    return left!=right.getStandard();
+}
+bool operator!=(const AutoDiff &left, double right){
+    return left.getStandard()!=right;
+}
 bool operator>(const AutoDiff &left, const AutoDiff &right){
     return left.getStandard()>right.getStandard();
 }
