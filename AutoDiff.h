@@ -38,6 +38,9 @@ class AutoDiff {
         AutoDiff operator=(const AutoDiff &right){
             return right;
         }
+        AutoDiff operator=(const double x){
+            return AutoDiff(x, 0);
+        }
         AutoDiff operator+=(const AutoDiff &right){
             standard+=right.getStandard();
             dual+=right.getDual();
