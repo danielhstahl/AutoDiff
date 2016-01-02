@@ -8,6 +8,10 @@ AutoDiff::AutoDiff(){
     standard=0;
     dual=0;
 }
+AutoDiff::AutoDiff(double stnd){
+    standard=stnd;
+    dual=0;
+}
 double AutoDiff::getStandard() const{
     return standard;
 }
@@ -99,6 +103,20 @@ AutoDiff operator/(const AutoDiff &left, double right){
 }
 AutoDiff operator/(double left, const AutoDiff &right){
     return right.recipricol().multiply(left);
+}
+AutoDiff AutoDiff::operator=(const AutoDiff &right){
+    //return right;
+    standard=right.getStandard();
+    dual=right.getDual();
+}
+AutoDiff AutoDiff::operator=(double x){
+   // return AutoDiff(x, 0.0);
+    standard=x;
+    dual=0.0;
+}
+AutoDiff AutoDiff::operator+=(const AutoDiff &right){
+    standard+=right.getStandard();
+    dual+=right.getDual();
 }
 bool operator==(const AutoDiff &left, const AutoDiff &right){
     return left.getStandard()==right.getStandard() && left.getDual()==right.getDual();

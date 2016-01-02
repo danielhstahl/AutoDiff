@@ -34,18 +34,13 @@ class AutoDiff {
         friend bool operator<(const AutoDiff&, const AutoDiff&);//compares "standard" only!
         friend bool operator<(const AutoDiff&, double);
         friend bool operator<(double, const AutoDiff&);
-
-        AutoDiff operator=(const AutoDiff &right){
-            return right;
-        }
-        AutoDiff operator=(const double x){
-            return AutoDiff(x, 0);
-        }
-        AutoDiff operator+=(const AutoDiff &right){
-            standard+=right.getStandard();
-            dual+=right.getDual();
-        }
+        AutoDiff operator=(const AutoDiff&);
+        AutoDiff operator=(double);
+        AutoDiff operator+=(const AutoDiff &right);
+        
+        
         AutoDiff(double, double);
+        AutoDiff(double);
         AutoDiff();
         AutoDiff add(const AutoDiff&) const;
         AutoDiff add(double) const;
@@ -67,4 +62,5 @@ AutoDiff exp(const AutoDiff&);
 AutoDiff log(const AutoDiff&);
 AutoDiff sqrt(const AutoDiff&);
 AutoDiff erf(const AutoDiff&);
+
 #endif
