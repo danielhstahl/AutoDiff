@@ -1,66 +1,213 @@
 #ifndef AUTODIFF_H
 #define AUTODIFF_H
 #include <cmath>
-
-
+template<class T>
 class AutoDiff {
     private:
-        double standard;
-        double dual;
+        T standard;
+        T dual;
 
     public:
-        friend AutoDiff operator+(const AutoDiff&, const AutoDiff&);
-        friend AutoDiff operator+(const AutoDiff&, double);
-        friend AutoDiff operator+(double, const AutoDiff&);
-        friend AutoDiff operator-(const AutoDiff&, const AutoDiff&);
-        friend AutoDiff operator-(const AutoDiff&);
-        friend AutoDiff operator-(const AutoDiff&, double);
-        friend AutoDiff operator-(double, const AutoDiff&);
-        friend AutoDiff operator*(const AutoDiff&, const AutoDiff&);
-        friend AutoDiff operator*(const AutoDiff&, double);
-        friend AutoDiff operator*(double, const AutoDiff&);
-        friend AutoDiff operator/(const AutoDiff&, const AutoDiff&);
-        friend AutoDiff operator/(const AutoDiff&, double);
-        friend AutoDiff operator/(double, const AutoDiff&);
-        friend bool operator==(const AutoDiff&, const AutoDiff&);
-        friend bool operator==(double, const AutoDiff&);
-        friend bool operator==(const AutoDiff&, double);
-        friend bool operator!=(const AutoDiff&, const AutoDiff&);
-        friend bool operator!=(double, const AutoDiff&);
-        friend bool operator!=(const AutoDiff&, double);
-        friend bool operator>(const AutoDiff&, const AutoDiff&); //compares "standard" only!
-        friend bool operator>(const AutoDiff&, double);
-        friend bool operator>(double, const AutoDiff&);
-        friend bool operator<(const AutoDiff&, const AutoDiff&);//compares "standard" only!
-        friend bool operator<(const AutoDiff&, double);
-        friend bool operator<(double, const AutoDiff&);
-        AutoDiff operator=(const AutoDiff&);
-        AutoDiff operator=(double);
-        AutoDiff operator+=(const AutoDiff &right);
-        
-        
-        AutoDiff(double, double);
-        AutoDiff(double);
-        AutoDiff();
-        AutoDiff add(const AutoDiff&) const;
-        AutoDiff add(double) const;
-        AutoDiff subtract(const AutoDiff&) const;
-        AutoDiff subtract(double) const;
-        AutoDiff multiply(const AutoDiff&) const;
-        AutoDiff multiply(double) const;
-        AutoDiff divide(const AutoDiff&) const;
-        AutoDiff divide(double) const;
-        void setDual(double);
-        void setStandard(double);
-        AutoDiff recipricol() const;
-        double getStandard() const;
-        double getDual() const;
-};
-AutoDiff sin(const AutoDiff&);
-AutoDiff cos(const AutoDiff&);
-AutoDiff exp(const AutoDiff&);
-AutoDiff log(const AutoDiff&);
-AutoDiff sqrt(const AutoDiff&);
-AutoDiff erf(const AutoDiff&);
+        AutoDiff(const T& stnd, const T& dl){
+            standard=stnd;
+            dual=dl;
+        }
+        AutoDiff(){
+            standard=0;
+            dual=0;
+        }
 
+        AutoDiff(const T& stnd){
+            standard=stnd;
+            dual=0;
+        }
+        T getStandard() const{
+            return standard;
+        }
+        T getDual() const{
+            return dual;
+        }
+        AutoDiff<T> recipricol() const{
+            return AutoDiff<T>(1.0/standard, -dual/(standard*standard));
+        }
+
+        void setDual(const T& val){
+            dual=val;
+        }
+        void setStandard(const T& val){
+            standard=val;
+        }
+                //template<typename U, typename W,typename Z>
+        AutoDiff<T> operator=(const AutoDiff<T> &right){
+            //return right;
+            standard=right.getStandard();
+            dual=right.getDual();
+        }
+        AutoDiff<T> operator=(const T& x){
+        // return AutoDiff(x, 0.0);
+            standard=x;
+            dual=0.0;
+        }
+        template<typename W>
+        auto add(const AutoDiff<W> &val) const{
+            return AutoDiff(standard+val.getStandard(), dual+val.getDual());
+        }
+        template< typename W>
+        auto add(const W& val) const{
+            return AutoDiff(standard+val, dual);
+        }
+        template<typename W>
+        auto subtract(const AutoDiff<W> &val) const{
+            return AutoDiff(standard-val.getStandard(), dual-val.getDual());
+        }
+        template<typename W>
+        auto subtract(const W& val) const{
+            return AutoDiff(standard-val, dual);
+        }
+        template<typename W>
+        auto multiply(const AutoDiff<W> &val) const{
+            return AutoDiff(standard*val.getStandard(), standard*val.getDual()+dual*val.getStandard());
+        }
+        template<typename U, typename W>
+        auto multiply(const W& val) const{
+            return AutoDiff(standard*val, dual*val);
+        }
+        template<typename W>
+        void operator+=(const AutoDiff<W> &right){
+            standard+=right.getStandard();
+            dual+=right.getDual();
+        }
+};
+
+
+
+
+
+template< typename W>
+auto sin(const AutoDiff<W> &val){
+    return AutoDiff<W>(sin(val.getStandard()), cos(val.getStandard())*val.getDual());
+}
+template<typename W>
+auto cos(const AutoDiff<W> &val){
+    return AutoDiff<W>(cos(val.getStandard()), -sin(val.getStandard())*val.getDual());
+}
+template<typename W>
+auto exp(const AutoDiff<W> &val){
+    return AutoDiff<W>(exp(val.getStandard()), exp(val.getStandard())*val.getDual());
+}
+template<typename W>
+auto log(const AutoDiff<W> &val){
+    return AutoDiff<W>(log(val.getStandard()), val.getDual()/val.getStandard());
+}
+template< typename W>
+auto sqrt(const AutoDiff<W> &val){
+    auto getsqrt=sqrt(val.getStandard());
+    return AutoDiff<W>(getsqrt, val.getDual()/(2*getsqrt));
+}
+template<typename W>
+auto erf(const AutoDiff<W> &val){
+    return AutoDiff<W>(erf(val.getStandard()), (2.0/sqrt(M_PI))*exp(-val.getStandard()*val.getStandard())*val.getDual());
+}
+template<typename W,typename Z>
+auto operator+(const AutoDiff<W> &left, const AutoDiff<Z> &right){
+    return left.add(right);
+}
+template<typename W,typename Z>
+auto operator+(const AutoDiff<W> &left, const Z& right){
+    return left.add(right);
+}
+template< typename W,typename Z>
+auto operator+(const W& left, const AutoDiff<Z> &right){
+    return right.add(left);
+}
+template<typename W,typename Z>
+auto operator-(const AutoDiff<W> &left, const AutoDiff<Z> &right){
+    return left.subtract(right);
+}
+template<typename W>
+auto operator-(const AutoDiff<W> &right){
+    return AutoDiff<W>(-right.getStandard(), -right.getDual());
+}
+template<typename W,typename Z>
+auto operator-(const AutoDiff<W> &left, const Z& right){
+    return left.subtract(right);
+}
+template< typename W,typename Z>
+auto operator-(const W& left, const AutoDiff<Z> &right){
+    return right.multiply(-1).add(left);
+}
+template<typename W,typename Z>
+auto operator*(const AutoDiff<W> &left, const AutoDiff<Z> &right){
+    return left.multiply(right);
+}
+template<typename W,typename Z>
+auto operator*(const AutoDiff<W> &left, const Z& right){
+    return left.multiply(right);
+}
+template< typename W,typename Z>
+auto operator*(const W& left, const AutoDiff<Z> &right){
+    return right.multiply(left);
+}
+template<typename W,typename Z>
+auto operator/(const AutoDiff<W> &left, const AutoDiff<Z> &right){
+    return left.multiply(right.recipricol());
+}
+template<typename W,typename Z>
+auto operator/(const AutoDiff<W> &left, const Z& right){
+    return left.multiply(1.0/right);
+}
+template<typename W,typename Z>
+auto operator/(const W& left, const AutoDiff<Z> &right){
+    return right.recipricol().multiply(left);
+}
+
+
+template<typename U, typename W>
+bool operator==(const AutoDiff<U> &left, const AutoDiff<W> &right){
+    return left.getStandard()==right.getStandard() && left.getDual()==right.getDual();
+}
+template<typename U, typename W>
+bool operator==(const U& left, const AutoDiff<W> &right){
+    return left==right.getStandard();
+}
+template<typename U, typename W>
+bool operator==(const AutoDiff<U> &left, const W& right){
+    return left.getStandard()==right;
+}
+template<typename U, typename W>
+bool operator!=(const AutoDiff<U> &left, const AutoDiff<W> &right){
+    return left.getStandard()!=right.getStandard() && left.getDual()!=right.getDual();
+}
+template<typename U, typename W>
+bool operator!=(const U& left, const AutoDiff<W> &right){
+    return left!=right.getStandard();
+}
+template<typename U, typename W>
+bool operator!=(const AutoDiff<U> &left, const W& right){
+    return left.getStandard()!=right;
+}
+template<typename U, typename W>
+bool operator>(const AutoDiff<U> &left, const AutoDiff<W> &right){
+    return left.getStandard()>right.getStandard();
+}
+template<typename U, typename W>
+bool operator>(const U& left, const AutoDiff<W> &right){
+    return left>right.getStandard();
+}
+template<typename U, typename W>
+bool operator>(const AutoDiff<U> &left, const W& right){
+    return left.getStandard()>right;
+}
+template<typename U, typename W>
+bool operator<(const AutoDiff<U> &left, const AutoDiff<W> &right){
+    return left.getStandard()<right.getStandard();
+}
+template<typename U, typename W>
+bool operator<(const U& left, const AutoDiff<W> &right){
+    return left<right.getStandard();
+}
+template<typename U, typename W>
+bool operator<(const AutoDiff<U> &left, const W& right){
+    return left.getStandard()<right;
+}
 #endif
