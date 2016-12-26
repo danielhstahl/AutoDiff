@@ -1,7 +1,0 @@
-unix (static):
-g++ -O3 -std=c++11 -o AutoDiff.o -c AutoDiff.cpp
-ar rcs libAutoDiff.a AutoDiff.o
-
-unix (shared):
-g++ -O3 -std=c++11 -fpic -c AutoDiff.cpp -o AutoDiff.o
-g++ -shared -o libAutoDiff.so AutoDiff.o

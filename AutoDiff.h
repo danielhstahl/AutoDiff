@@ -210,4 +210,5 @@ template<typename U, typename W>
 bool operator<(const AutoDiff<U> &left, const W& right){
     return left.getStandard()<right;
 }
+
 #endif
