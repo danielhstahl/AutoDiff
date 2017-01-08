@@ -68,7 +68,7 @@ class AutoDiff {
         auto multiply(const AutoDiff<W> &val) const{
             return AutoDiff(standard*val.getStandard(), standard*val.getDual()+dual*val.getStandard());
         }
-        template<typename U, typename W>
+        template<typename W>
         auto multiply(const W& val) const{
             return AutoDiff(standard*val, dual*val);
         }
