@@ -1,0 +1,5 @@
+coverage:
+    ignore:
+        - "test.cpp"
+        - "catch.hpp"
+        - "BlackScholes.h"
