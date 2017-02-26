@@ -2,6 +2,7 @@
 #include "catch.hpp"
 #include "AutoDiff.h"
 #include <complex>
+#include "BlackScholes.h"
 
 TEST_CASE("Test polynomial", "[Functional]"){
     AutoDiff<double> myAutoDiff(5.0, 1.0);
@@ -38,4 +39,17 @@ TEST_CASE("Test complex", "[Functional]"){
     REQUIRE(myResult.getStandard().imag()==Approx(sin(4.0)));
     REQUIRE(myResult.getDual().real()==Approx(-sin(4.0)));
     REQUIRE(myResult.getDual().imag()==Approx(cos(4.0)));
+}
+
+TEST_CASE("Test Delta", "[BS]"){
+    const auto S0=AutoDiff<double>(50, 1);
+    const auto r=.05;
+    const auto t=1.0;
+    const auto discount=exp(-r*t);
+    const auto k=50;
+    const auto sigma=.3*sqrt(t);
+
+    double s=sqrt(2.0);
+    auto d1=log(50.0/(discount*k))/(sigma)+sigma*.5;
+    REQUIRE(BSCall(S0, discount, k, sigma).getDual()==Approx(.5*erf(d1/s)+.5));
 }
