@@ -1,6 +1,8 @@
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
 #ifndef AUTODIFF_H
 #define AUTODIFF_H
-#define _USE_MATH_DEFINES
 #include <cmath>
 template<class T>
 class AutoDiff {
@@ -38,16 +40,15 @@ class AutoDiff {
         void setStandard(const T& val){
             standard=val;
         }
-                //template<typename U, typename W,typename Z>
-        AutoDiff<T> operator=(const AutoDiff<T> &right){
-            //return right;
+        AutoDiff<T>& operator=(const AutoDiff<T>& right){
             standard=right.getStandard();
             dual=right.getDual();
+            return *this;
         }
-        AutoDiff<T> operator=(const T& x){
-        // return AutoDiff(x, 0.0);
+        AutoDiff<T>& operator=(const T& x){
             standard=x;
             dual=0.0;
+            return *this;
         }
         template<typename W>
         auto add(const AutoDiff<W> &val) const{
