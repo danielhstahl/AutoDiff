@@ -1,5 +1,7 @@
 main.cpp
 *.o
 *.a
+*.gcda
+*.gcno
 test
 .vscode
