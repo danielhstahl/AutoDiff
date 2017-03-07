@@ -1,5 +1,6 @@
 #ifndef AUTODIFF_H
 #define AUTODIFF_H
+#define _USE_MATH_DEFINES
 #include <cmath>
 template<class T>
 class AutoDiff {
