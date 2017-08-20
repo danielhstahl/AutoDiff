@@ -26,6 +26,12 @@ TEST_CASE("Test exponential", "[Functional]"){
     REQUIRE(myResult.getStandard()==Approx(exp(5.0)));
     REQUIRE(myResult.getDual()==Approx(exp(5.0)));
 }
+TEST_CASE("Test abs", "[Functional]"){
+    AutoDiff<double> myAutoDiff(-5.0, 1.0);
+    auto myResult=abs(myAutoDiff);
+    REQUIRE(myResult==Approx(5.0));
+
+}
 TEST_CASE("Test logistic", "[Functional]"){
     AutoDiff<double> myAutoDiff(.5, 1.0);
     auto myF=[](const auto& val){

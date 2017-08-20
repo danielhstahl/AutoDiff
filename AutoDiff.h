@@ -110,6 +110,10 @@ template<typename W>
 auto erf(const AutoDiff<W> &val){
     return AutoDiff<W>(erf(val.getStandard()), (2.0/sqrt(M_PI))*exp(-val.getStandard()*val.getStandard())*val.getDual());
 }
+template<typename W>
+auto abs(const AutoDiff<W> &val){
+    return abs(val.getStandard());
+}
 template<typename W,typename Z>
 auto operator+(const AutoDiff<W> &left, const AutoDiff<Z> &right){
     return left.add(right);
