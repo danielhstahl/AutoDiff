@@ -114,6 +114,10 @@ template<typename W>
 auto abs(const AutoDiff<W> &val){
     return abs(val.getStandard());
 }
+template<typename W>
+auto fabs(const AutoDiff<W> &val){
+    return fabs(val.getStandard());
+}
 template<typename W,typename Z>
 auto operator+(const AutoDiff<W> &left, const AutoDiff<Z> &right){
     return left.add(right);

@@ -32,6 +32,12 @@ TEST_CASE("Test abs", "[Functional]"){
     REQUIRE(myResult==Approx(5.0));
 
 }
+TEST_CASE("Test fabs", "[Functional]"){
+    AutoDiff<double> myAutoDiff(-5.0, 1.0);
+    auto myResult=fabs(myAutoDiff);
+    REQUIRE(myResult==Approx(5.0));
+
+}
 TEST_CASE("Test logistic", "[Functional]"){
     AutoDiff<double> myAutoDiff(.5, 1.0);
     auto myF=[](const auto& val){
