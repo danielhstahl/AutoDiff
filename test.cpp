@@ -15,6 +15,12 @@ TEST_CASE("Test polynomial", "[Functional]"){
     REQUIRE(myResult.getStandard()==Approx(25.0));
     REQUIRE(myResult.getDual()==Approx(10.0));
 }
+TEST_CASE("Test <<", "[Functional]"){
+    AutoDiff<double> myAutoDiff(5.0, 1.0);
+    std::cout<<myAutoDiff<<std::endl;
+    
+
+}
 TEST_CASE("Test exponential", "[Functional]"){
     AutoDiff<double> myAutoDiff(5.0, 1.0);
     auto myExp=[&](const auto& myX){

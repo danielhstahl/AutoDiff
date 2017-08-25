@@ -3,6 +3,8 @@
 #endif
 #ifndef AUTODIFF_H
 #define AUTODIFF_H
+
+
 #include <cmath>
 template<class T>
 class AutoDiff {
@@ -79,6 +81,11 @@ class AutoDiff {
             standard+=right.getStandard();
             dual+=right.getDual();
         }
+        friend std::ostream &operator<<(std::ostream& out, const AutoDiff<T>& objToPrint){
+            out<<"standard: "<<objToPrint.getStandard()<<", dual: "<<objToPrint.getDual();
+            return out;
+        }
+        
 };
 
 
@@ -122,11 +129,9 @@ template<typename W,typename Z>
 auto operator+(const AutoDiff<W> &left, const AutoDiff<Z> &right){
     return left.add(right);
 }
-template<typename W,typename Z>
-auto operator<<(std::ostream &out, const AutoDiff<Z> &right){
-    out<<"standard: "<<right.getStandard()<<", dual: "<<right.getDual();
-    return out;
-}
+
+
+
 template<typename W,typename Z>
 auto operator+(const AutoDiff<W> &left, const Z& right){
     return left.add(right);
