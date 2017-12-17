@@ -1,5 +1,5 @@
-#ifndef __BLACKSCHOLES_H_INCLUDED__
-#define __BLACKSCHOLES_H_INCLUDED__
+#ifndef __BLACKSCHOLES_AUTODIFFONLY_H_INCLUDED__
+#define __BLACKSCHOLES_AUTODIFFONLY_H_INCLUDED__
 #include <cmath>
 
 namespace autodiffonly{
