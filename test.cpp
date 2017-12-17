@@ -79,6 +79,6 @@ TEST_CASE("Test Delta", "[BS]"){
 
     double s=sqrt(2.0);
     auto d1=log(50.0/(discount*k))/(sigma)+sigma*.5;
-    REQUIRE(BSCall(S0, discount, k, sigma).getDual()==Approx(.5*erf(d1/s)+.5));
+    REQUIRE(autodiffonly::BSCall(S0, discount, k, sigma).getDual()==Approx(.5*erf(d1/s)+.5));
 }
 
