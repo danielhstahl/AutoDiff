@@ -81,3 +81,4 @@ TEST_CASE("Test Delta", "[BS]"){
     auto d1=log(50.0/(discount*k))/(sigma)+sigma*.5;
     REQUIRE(BSCall(S0, discount, k, sigma).getDual()==Approx(.5*erf(d1/s)+.5));
 }
+
