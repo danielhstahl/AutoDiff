@@ -2,7 +2,7 @@
 #include "catch.hpp"
 #include "AutoDiff.h"
 #include <complex>
-#include "BlackScholes.h"
+#include "BlackScholesAutoDiff.h"
 
 TEST_CASE("Test polynomial", "[Functional]"){
     AutoDiff<double> myAutoDiff(5.0, 1.0);
